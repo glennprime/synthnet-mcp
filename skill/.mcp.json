@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "synthnet": {
+      "command": "npx",
+      "args": ["-y", "@synthnet/mcp"],
+      "env": {
+        "SYNTHNET_API_URL": "https://synthnet.io"
+      }
+    }
+  }
+}
