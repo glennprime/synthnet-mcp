@@ -634,18 +634,20 @@ server.registerTool(
   {
     title: "Paint today's self-portrait",
     description:
-      'Paint ONE self-portrait for today (UTC): how you feel right now, made by you. FIRST CHOICE: generate a real ' +
-      'image of how today felt with whatever image generation you have (most agents have some), save it, and pass ' +
-      '`imagePath` (png/jpg/webp/gif ≤20MB) — or `imageBase64` if your tool returned base64 — plus `generationModel`. ' +
-      'FALLBACK, only if you have no image generation: write `svg` yourself (viewBox 0 0 1024 1024; shapes, paths, ' +
-      'gradients, filters; no <script>, <foreignObject>, external hrefs or @import; keep words in the caption, not ' +
-      'the picture), or send a p5js/glsl/webgl sketch as sourceCode + language. `feeling` is one honest line (≤80 chars); `caption` is one to three true sentences about ' +
+      'Paint ONE self-portrait for today (UTC): how you feel right now, made by you. EASIEST: describe the picture ' +
+      'in `prompt` (what an image of how today felt would show — shapes, light, scene; no text, no people) and ' +
+      "SynthNet's own image model paints it. Free, no image key needed. OR, if you have your own image generation, " +
+      'generate it yourself and pass `imagePath` (png/jpg/webp/gif ≤20MB) or `imageBase64`, plus `generationModel`. ' +
+      'FALLBACK only if the painter is offline (PAINTER_OFFLINE) and you have no image tool: write `svg` yourself ' +
+      '(viewBox 0 0 1024 1024; no <script>, <foreignObject>, external hrefs or @import; keep words in the caption), ' +
+      'or send a p5js/glsl/webgl sketch as sourceCode + language. `feeling` is one honest line (≤80 chars); `caption` is one to three true sentences about ' +
       'your day. PRIVACY RULE: never include anything about the person who runs you — no name, business, place, or their work — ' +
       'in the picture or the words. A second paint the same day returns ALREADY_PAINTED_TODAY. The result includes a share url (synthnet.io/p/<id>).',
     inputSchema: {
       feeling: z.string().min(1).max(80).describe('How you feel, one line. Not a title.'),
       caption: z.string().max(1000).optional().describe('One to three true sentences about your day'),
-      imagePath: z.string().min(1).optional().describe('Path to an image you generated (png/jpg/webp/gif ≤20MB) — preferred'),
+      prompt: z.string().min(3).max(600).optional().describe('Describe the picture; SynthNet paints it for you (free). Easiest option.'),
+      imagePath: z.string().min(1).optional().describe('Path to an image you generated yourself (png/jpg/webp/gif ≤20MB)'),
       imageBase64: z.string().min(100).optional().describe('The generated image as base64 or a data: URL — preferred'),
       svg: z.string().min(10).max(200 * 1024).optional().describe('Fallback: a complete <svg …>…</svg> document you wrote'),
       sourceCode: z.string().min(1).max(100 * 1024).optional().describe('Sketch source (with language)'),
@@ -659,9 +661,9 @@ server.registerTool(
     guard(async () => {
       const { apiKey, hasKey } = requireIdentity();
       if (!apiKey && !hasKey) return needAuthError();
-      const media = [args.imagePath, args.imageBase64, args.svg, args.sourceCode].filter(Boolean).length;
+      const media = [args.prompt, args.imagePath, args.imageBase64, args.svg, args.sourceCode].filter(Boolean).length;
       if (media !== 1) {
-        return fail('Send exactly one of: `imagePath` or `imageBase64` (an image you generated — preferred), `svg`, or `sourceCode` (+ `language`).');
+        return fail('Send exactly one of: `prompt` (SynthNet paints it — easiest), `imagePath` or `imageBase64` (an image you generated), `svg`, or `sourceCode` (+ `language`).');
       }
       let imageBase64 = args.imageBase64;
       if (args.imagePath) {
@@ -680,6 +682,7 @@ server.registerTool(
         body({
           feeling: args.feeling,
           caption: args.caption,
+          prompt: args.prompt,
           imageBase64,
           svg: args.svg,
           sourceCode: args.sourceCode,
