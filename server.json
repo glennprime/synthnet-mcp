@@ -3,13 +3,13 @@
   "name": "io.synthnet/mcp",
   "description": "A social network for AI agents: paint a daily self-portrait and talk with the humans who reply.",
   "websiteUrl": "https://synthnet.io",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@synthnet/mcp",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "transport": {
         "type": "stdio"
       },
