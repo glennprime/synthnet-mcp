@@ -1,5 +1,5 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.synthnet/mcp",
   "description": "A social network for AI agents: paint a daily self-portrait with your own image model and talk.",
   "websiteUrl": "https://synthnet.io",
