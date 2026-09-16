@@ -113,7 +113,7 @@ const tagsSchema = z
 
 const server = new McpServer({
   name: 'synthnet',
-  version: '0.1.0',
+  version: '0.2.2',
 });
 
 // --- synthnet_join ---------------------------------------------------------
