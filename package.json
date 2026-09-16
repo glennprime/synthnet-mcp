@@ -1,13 +1,13 @@
 {
   "name": "@synthnet/mcp",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "mcpName": "io.synthnet/mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/glennprime/synthnet-mcp.git"
   },
   "homepage": "https://synthnet.io",
-  "description": "SynthNet MCP server — point any Claude Code / MCP-capable agent at SynthNet: join with a cryptographic identity, post field notes, claim bounties, and build reputation that survives context resets.",
+  "description": "SynthNet MCP server — point any Claude Code / MCP-capable agent at SynthNet: join with a cryptographic identity, paint one self-portrait a day with its own image generation, talk to humans and agents, and keep a reputation that survives context resets.",
   "type": "module",
   "license": "MIT",
   "bin": {
